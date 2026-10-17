@@ -1,136 +1,41 @@
 ---
-tags: [deployment, packaging, docker, debian, systemd]
-aliases: [Руководство по развертыванию, Пакетирование, Docker, Systemd]
+tags: [deployment, packaging, wails-build, cross-compile, release, linux, windows]
+aliases: [Deployment, Production Packaging, Wails Build]
 ---
 
-# 🚀 Развертывание и конфигурация системных служб
+# 🚀 Компиляция, упаковка и автономное развертывание
 
-Данный документ описывает варианты промышленного развертывания платформы CARINA, включая настройку системных служб Systemd, контейнеризацию в Docker и конфигурацию сетевого окружения.
+This document covers the production build process for standalone Linux and Windows desktop binaries.
 
-⬅️ Назад в [Главный хаб документации](carina_moc.md) | 🛠️ См. [Руководства разработчика](developer_guides.md) | 🗄️ См. [База данных и схемы](database_and_schemas.md) | 🧪 См. [Тестирование и контроль качества](testing.md) | 🚑 См. [Приоритет спецтранспорта (EVP)](evp_and_preemption.md)
-
----
-
-## 1. Сетевые порты и спецификация коммуникаций
-
-CARINA координирует локальные конвейеры процессов, дорожные контроллеры и видеостены ситуационных центров с использованием выделенных портов:
-
-| Порт | Протокол | Подсистема / Процесс | Описание |
-| :--- | :--- | :--- | :--- |
-| **`50051`** | TCP (gRPC) | CentralController $\leftrightarrow$ Микросервисы | Внутренняя шина RPC для потоков телеметрии и запросов нейросетевых действий. |
-| **`8080`** | TCP (WS) | Smart Dashboard Service (SDS) | Сервер WebSocket телеметрии, передающий данные очередей веб-клиентам. |
-| **`2201`** | TCP (HTTP/SSE) | Веб-шлюз Go (`src_go/web_gateway`) | Основной входной шлюз: `POST /api/v1/evp/telemetry` (HTTP 204), `GET /cco/stream` (SSE) и веб-интерфейс CCO. |
-| **`8085`** | TCP (HTTP) | Автономный приемник EVP (`src/evp`) | Резервный слушатель GPS-телеметрии спецтранспорта при неактивном шлюзе Go. |
-| **`42123`** | TCP (Local) | SingleInstanceLock (`single_instance.py`) | Сокетный мьютекс ОС для предотвращения дублирования экземпляров приложения; принимает сигнал `RESTORE`. |
-| **`161`** | UDP (SNMP) | Дорожные контроллеры NTCIP 1202 / UTMC | Опрос и отправка команд удержания фаз (`ascPhaseHold`) светофорным колонкам. |
-| **`162`** | UDP (Trap) | Слушатель аппаратных прерываний (`traplistener`) | Прием асинхронных SNMP-трапов аппаратных неисправностей и сработок детекторов. |
+⬅️ [Центр документации](README.md) | 🏛️ [Architecture](architecture.md) | 🛠️ [Developer Guides](developer_guides.md)
 
 ---
 
-## 2. Сборка базовых подсистем
+## 1. Standalone Native Production Build
 
-Перед запуском CARINA в промышленную эксплуатацию необходимо собрать нативные бинарные модули и веб-компоненты:
+Wails embeds the frontend assets directly into the Go executable via `//go:embed`:
 
-### 2.1 Компиляция аппаратного и веб-шлюза на Go
-Скомпилированный демон на Go обслуживает SNMP-опрос контроллеров, микросекундные команды преемпции EVP и трансляцию потока на видеостены CCO:
 ```bash
-cd src_go
-go build -ldflags="-s -w" -o ../bin/carina-go ./cmd/gateway
-chmod +x ../bin/carina-go
-```
+# Build optimized binary for Linux
+wails build -clean -platform linux/amd64
 
-### 2.2 Сборка веб-панели оператора CCO на React
-Веб-интерфейс Central Control Operator (CCO) расположен в каталоге [`src_tsx/`](../../src_tsx):
-```bash
-cd src_tsx
-npm install
-npm run build
-```
-Сборщик Vite сохраняет готовый продакшн-бандл в `src_tsx/dist/`, который автоматически отдается веб-шлюзом на Go по адресу `http://localhost:2201/cco/`.
-
----
-
-## 3. Контейнеризация в Docker (`Dockerfile`)
-
-CARINA включает оптимизированный многоэтапный `Dockerfile` для запуска контейнеров с аппаратным ускорением GPU:
-
-### 3.1 Сборка Docker-образа
-```bash
-docker build -t carina-core:latest .
-```
-
-### 3.2 Запуск контейнера с ускорением GPU и пробросом портов
-```bash
-docker run -d \
-  --name carina_app \
-  --gpus all \
-  -p 50051:50051 \
-  -p 8080:8080 \
-  -p 2201:2201 \
-  -p 8085:8085 \
-  -v /var/log/carina:/app/logs \
-  -v /etc/carina:/app/config \
-  carina-core:latest
+# Build standalone executable for Windows
+wails build -clean -platform windows/amd64
 ```
 
 ---
 
-## 4. Конфигурация системного демона Linux Systemd
+## 2. Runtime Requirements
 
-Для запуска CARINA в качестве системной службы в Ubuntu/Debian Linux:
-
-Создайте файл `/etc/systemd/system/carina.service`:
-
-```ini
-[Unit]
-Description=CARINA AI Real-Time Traffic Orchestrator
-After=network.target postgresql.service
-
-[Service]
-Type=simple
-User=carina
-WorkingDirectory=/opt/carina
-ExecStart=/usr/bin/python3 /opt/carina/carina.py
-Restart=always
-RestartSec=5
-Environment=PYTHONUNBUFFERED=1
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Примените изменения и активируйте службу:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable carina
-sudo systemctl start carina
-```
-
----
-
-## 5. Развертывание в сети Zero-Trust Mesh через Tailscale Funnel
-
-Для распределенных агломерационных сетей без публичных белых статических IP:
-1. Создайте ключ Tailscale Auth Key с правами `funnel` в панели администрирования Tailscale.
-2. Укажите параметры в файле `.env`:
-   ```bash
-   CARINA_GATEWAY_ENABLED=true
-   CARINA_GATEWAY_PORT=2201
-   CARINA_TAILSCALE_AUTH_KEY=tskey-auth-kXXXXX-XXXXXXXX
-   ```
-3. При старте шлюза Go модуль [`src_go/web_gateway/tailscale.go`](../../src_go/web_gateway/tailscale.go) автоматически зарегистрирует узел и поднимет туннель HTTPS Funnel по адресу `https://<node-name>.<tailnet>.ts.net:2201`, безопасно открывая API EVP и видеостену CCO по протоколу TLS без изменения правил межсетевых экранов.
-
----
-
-## 6. Пакетирование и дистрибуция
-
-Устаревшие механизмы сборки автономных пакетов PyInstaller и сборка `.deb` через `build_installer.sh` были удалены из проекта. Современный стандартизированный конвейер контейнеризированной дистрибуции и установки запланирован в следующих версиях платформы.
+| Operating System | Runtime Requirements | Architecture |
+| :--- | :--- | :---: |
+| **Linux (Ubuntu / Debian / Fedora)** | WebKitGTK 4.0+ (`libwebkit2gtk-4.0-37`) | `x86_64` |
+| **Windows 10 / 11** | Microsoft Edge WebView2 Runtime (Built-in) | `x86_64` |
 
 ---
 
 <div align="center">
   <img src="../assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="45" /><br/>
   <b>Noxfort Systems</b> — <i>A State Of Art Company</i><br/>
-  <i>Инженерия Интеллектуальной Мобильности • CARINA CORE v1.2.0</i><br/>
-  <small>© 2026 Noxfort Systems. Лицензия AGPLv3.</small>
+  <i>Инженерия интеллектуальной мобильности • EVP Simulator v1.0.0</i>
 </div>

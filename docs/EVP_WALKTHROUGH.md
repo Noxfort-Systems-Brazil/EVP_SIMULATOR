@@ -1,100 +1,82 @@
-# Walkthrough: Módulo de Preempção de Veículos de Emergência (EVP)
+---
+tags: [evp, preemption, contran, ctb, mutcd, green-corridor, kinematics]
+aliases: [EVP Walkthrough, Signal Preemption, Emergency Corridor]
+---
 
-Implementação completa do módulo **Emergency Vehicle Preemption (EVP)** na arquitetura da **CARINA_CORE** e **src_go**, em estrita conformidade com **SOLID + DDD + Flat Architecture**, respeito às normas de segurança do **CONTRAN** e comunicação **100% unidirecional (Fire-and-Forget)** para antenas GPS veiculares.
+# 🚨 Emergency Vehicle Preemption (EVP) Technical Walkthrough
+
+This document specifies the **Emergency Vehicle Preemption (EVP)** algorithms implemented in the EVP Simulator. The architecture strictly adheres to Brazilian traffic safety regulations (**CONTRAN Resolution nº 960**, **Art. 29, Section VII of the Brazilian Traffic Code - CTB**) and international standards (**FHWA MUTCD Section 4D.26**).
+
+⬅️ [Documentation Hub](README.md) | 🏛️ [Architecture](architecture.md) | 🚗 [Kinematics](kinematics_and_routing.md) | 🛡️ [Safety](signal_evaluation_and_safety.md)
 
 ---
 
-## 1. O Que Foi Desenvolvido
+## 1. Regulatory Right-of-Way Principles
 
-### Camada de Domínio & Serviço (`src/evp/` - Flat Architecture)
-- [`evp_models.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_models.py): Entidades de domínio com tipagem estrita (`CorporationType`, `TelemetryData`, `EmergencyVehicle`).
-- [`evp_kinematics.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_kinematics.py): Motor cinemático geodésico (Haversine WGS84). Identifica o gatilho espacial de **Início da Quadra** ($60\text{ m} \le \text{dist} \le 160\text{ m}$) e detecção de **Checkout** pós-cruzamento.
-- [`evp_service.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_service.py): Singleton central de ciclo de vida e orquestração de preempção. Reaproveita integralmente as regras físicas e transições regulamentares (amarelo e all-red) da CARINA ([`SafetyRules`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/utils/safety_rules.py) e [`StageTransitionManager`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/manager/stage_transition_manager.py)), emitindo `ACTION_HOLD` (1) no estágio alvo e `ACTION_ADVANCE` (0) nos divergentes, com watchdog de segurança em $45\text{ s}$.
-- [`evp_bridge.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_bridge.py): Interceptador de segurança que liga o `EVPService` ao [`SafetyAuditor`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/core/safety_auditor.py) e despacha via IPC de ultra-baixa latência para o `GoGatewayClient`.
-- [`evp_http_receiver.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_http_receiver.py): Servidor HTTP em background (porta `8085`) para ingestão das antenas GPS veiculares (`POST /api/v1/evp/telemetry` retornando `204 No Content` unidirecional).
-- [`evp_repository.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_repository.py): Persistência assíncrona na tabela `evp_telemetry_records`.
-- [`evp_notifier.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/evp/evp_notifier.py): Notificador thread-safe (Observer) para a Flet UI.
+Under **Art. 29, VII of the CTB**, emergency vehicles (ambulances, fire engines, police patrols) possess right-of-way **only when in urgent mission status and actively displaying continuous optical (flashing beacons) and audible (siren) warning signals**.
 
-### Camada de Hardware de Alta Velocidade (`src_go/evp_go/`)
-- [`types.go`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src_go/evp_go/types.go) e [`dispatcher.go`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src_go/evp_go/dispatcher.go): Dispatcher em Go compilado para comandos rápidos de preempção semafórica.
-- Integrado no roteador [`router.go`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src_go/cmd/gateway/router.go) sob o comando `"evp_preempt"`.
-
-### Banco de Dados & Schemas
-- Expandido o delta de decisão de 0-5 para **0-6 (`6: EVP_PREEMPTION`)** em [`step_decision_repo.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/repositories/step_decision_repo.py), [`step_decision_worker.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/src/database/step_decision_worker.py), [`schema_queries.json`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/config/database/schema_queries.json) e [`docs/DATABASE_AND_SCHEMAS.md`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/docs/DATABASE_AND_SCHEMAS.md).
-- Tabela criada: `evp_telemetry_records` com índice `idx_evp_veh_time`.
-
-### Camada Visual & Flet UI
-- [`evp_vehicle_marker.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/widgets/evp_vehicle_marker.py): Marcadores visuais desenhados com geometrias CONTRAN:
-  - **SAMU**: $\Delta$ Triângulo (Branco / Vermelho Vivo)
-  - **Bombeiros**: $\square$ Quadrado (Laranja / Vermelho Fogo)
-  - **Polícia**: $\bigcirc$ Círculo (Azul Escuro / Azul Royal)
-  - **Sirene Ativa**: Efeito de piscar síncrono com o `blink_toggle` do [`MapAnimator`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/animators/map_animator.py).
-- [`evp_vehicle_card.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/widgets/evp_vehicle_card.py): Card modal flutuante com telemetria ao clicar na viatura.
-- [`evp_fleet_connection_card.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/cards/evp_fleet_connection_card.py) e [`evp_safety_parameters_card.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/cards/evp_safety_parameters_card.py): Aba dedicada "Preempção (EVP)" no modal Configurações do Sistema com importação/exportação de CSV de conexão da frota, status em tempo real e ajustes CONTRAN.
-- Integrado na navegação em [`ui/main_ui.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/main_ui.py), [`navigation_manager.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/managers/navigation_manager.py), [`dashboard_view.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/views/dashboard_view.py) e [`live_canvas_map_widget.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/ui/widgets/live_canvas_map_widget.py).
-
-### Ferramenta de Testes e Simulação
-- [`demo/evp_vehicle_simulator.py`](file:///home/gabriel-moraes/Documentos/CARINA_CORE/demo/evp_vehicle_simulator.py): Simulador CLI standalone para teste de corridas de emergência e patrulha contínua.
+EVP Simulator enforces this via a **Deterministic Two-Factor Trigger**:
+1. **Spatial In-Block Criterion:** The emergency vehicle must be positioned within the approach detection zone ($60\text{ m} \le d \le 160\text{ m}$).
+2. **Operational Siren Criterion:** The vehicle's audible siren must be actively engaged (`SirenActive == true`).
 
 ---
 
-## 2. Resultados de Verificação
+## 2. Preemption Lifecycle State Machine
 
-### Testes Unitários Automatizados (`pytest`)
-Executados via `.venv/bin/pytest tests/unit/test_evp_service.py -v`:
-```
-tests/unit/test_evp_service.py::test_corporation_type_and_models PASSED  [ 16%]
-tests/unit/test_evp_service.py::test_evp_kinematics_engine PASSED        [ 33%]
-tests/unit/test_evp_service.py::test_contran_rules_action_evaluation PASSED [ 50%]
-tests/unit/test_evp_service.py::test_evp_service_two_factor_trigger PASSED [ 66%]
-tests/unit/test_evp_service.py::test_evp_bridge_safety_auditor_interception PASSED [ 83%]
-tests/unit/test_evp_service.py::test_evp_http_receiver_unidirectional PASSED [100%]
+```mermaid
+stateDiagram-v2
+    [*] --> Tracking : Vehicle in Transit (Patrol Mode)
+    Tracking --> TriggerEngaged : Siren Active & 60m <= d <= 160m
+    
+    state TriggerEngaged {
+        [*] --> EvaluateCurrentStage
+        EvaluateCurrentStage --> SafeTransition : Current Stage Conflicts
+        EvaluateCurrentStage --> GreenHold : Target Stage Already Active
+        SafeTransition --> YellowClearance : Wait 3.5s
+        YellowClearance --> AllRedClearance : Wait 1.5s
+        AllRedClearance --> GreenHold : Lock Target Phase (ACTION_HOLD)
+    }
 
-============================== 6 passed in 0.79s ===============================
-```
-
-### Compilação do Gateway Go
-Executado em `src_go/`:
-```bash
-go build -v ./...
-# Exit Code: 0 (Sucesso sem erros)
-```
-
-### Teste de Ingestão HTTP Unidirecional Ponta a Ponta
-Disparo simulado da antena GPS:
-```
-=======================================================
-🚨 INICIANDO SIMULAÇÃO DE CORRIDA DE EMERGÊNCIA
-Viatura: SAMU-01 (SAMU) 🔺 (Triângulo)
-Sirene: LIGADA | Destino: http://localhost:18086/api/v1/evp/telemetry
-=======================================================
-
-[18:31:15] SAMU-01 | Dist:  220.0m | DISTANTE (>160m) | HTTP 204 [OK]
-[18:31:16] SAMU-01 | Dist:  211.0m | DISTANTE (>160m) | HTTP 204 [OK]
-[18:31:16] SAMU-01 | Dist:  201.9m | DISTANTE (>160m) | HTTP 204 [OK]
-[18:31:17] SAMU-01 | Dist:  192.9m | DISTANTE (>160m) | HTTP 204 [OK]
+    GreenHold --> Checkout : Vehicle crosses stop line (d <= 15m)
+    GreenHold --> WatchdogTimeout : Hold dwell timer > 45s
+    
+    Checkout --> Normalization : Release Preemption
+    WatchdogTimeout --> Normalization : Safety Timeout Revocation
+    Normalization --> [*] : Return to Local Signal Plan
 ```
 
 ---
 
-## 3. Como Executar e Testar
+## 3. Spatial Zone Delimitation
 
-1. **Executar a CARINA com interface gráfica:**
-   ```bash
-   python carina.py
-   ```
-   - O receptor HTTP subirá automaticamente na porta `8085`.
-   - A nova aba **"Preempção EVP"** estará disponível na barra superior.
+```text
+                               Intersection Stop-Line
+       Advance Zone                 EVP Trigger Zone             Checkout
+    [> 160m to Junction]           [60m <= d <= 160m]           [d <= 15m]
+────────────────────────────┬─────────────────────────────┬────────────────────┼──── Intersection
+   Kinematic Tracking Only  │  Issue Preemption Request   │ Release Priority   │
+   No Phase Alteration      │  Transition to Green Hold   │ Resume Plan        │
+────────────────────────────┴─────────────────────────────┴────────────────────┴────
+```
 
-2. **Simular uma corrida de emergência (SAMU com sirene ligada):**
-   ```bash
-   .venv/bin/python demo/evp_vehicle_simulator.py --vehicle SAMU-01 --mode emergency
-   ```
-   - No mapa ao vivo, o triângulo do SAMU piscará e avançará em direção ao cruzamento.
-   - Ao atingir entre 60m e 160m, o semáforo abrirá corredor verde (`HOLD`).
-   - Ao transpor o cruzamento (checkout), o semáforo é liberado imediatamente.
+### 3.1 Kinematic Approach Distance
+The Euclidean distance $d$ between vehicle coordinates $(x_v, y_v)$ and the junction stop line $(x_j, y_j)$ is computed as:
 
-3. **Simular frota completa em patrulha (SAMU, Bombeiros e PM):**
-   ```bash
-   .venv/bin/python demo/evp_vehicle_simulator.py --mode patrol --duration 30
-   ```
+$$d = \sqrt{(x_j - x_v)^2 + (y_j - y_v)^2}$$
+
+Estimated Time-to-Clearance (TTC) is updated using instantaneous vehicle speed $v$:
+
+$$\text{TTC} = \frac{d}{v}$$
+
+When $\text{TTC} \le 8\text{ s}$ and the vehicle is in a designated lane connecting to the target stage, preemption transition is commanded.
+
+### 3.2 45-Second Watchdog Fail-Safe
+To prevent permanent network deadlock if an emergency vehicle stops, turns off its siren, or crashes inside the preemption zone, the controller maintains an unconditional **45-second dwell watchdog timer**. Upon expiration, preemption is revoked and local control resumes.
+
+---
+
+<div align="center">
+  <img src="assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="45" /><br/>
+  <b>Noxfort Systems</b> — <i>A State Of Art Company</i><br/>
+  <i>Intelligent Mobility Engineering • EVP Simulator v1.0.0</i>
+</div>

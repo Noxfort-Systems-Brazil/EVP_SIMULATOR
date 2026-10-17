@@ -1,77 +1,50 @@
 ---
-tags: [home, index, carina, hub]
-aliases: [Documentation Index, Overview, Portal]
+tags: [home, index, evp, simulator, hub]
+aliases: [Documentation Portal, Overview, EVP Simulator Hub]
 ---
 
 <div align="center">
-
-<img src="assets/carina-logo.png" alt="CARINA CORE Logo" width="120" />
-
-# CARINA Documentation Hub
-### Technical Master Portal & Architecture Index
-*Noxfort Systems — A State Of Art Company*
-
+  <img src="assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="70" /><br/>
+  <h1>EVP Simulator — Technical Master Portal & Simulation Hub</h1>
+  <h3>Open-Source Emergency Vehicle Preemption & Fleet Simulation Platform for Urban Networks</h3>
+  <i>Noxfort Systems — A State Of Art Company</i>
 </div>
 
-Welcome to the technical documentation library for **CARINA** (Controlled Artificial Road-traffic Intelligence Network Architecture) — an enterprise deep reinforcement learning ecosystem for urban traffic light networks.
+---
 
-Designed to operate seamlessly on **GitHub** and as an **[Obsidian](https://obsidian.md/) Knowledge Vault**, this documentation suite covers all 8 concurrent OS processes, neuro-symbolic safety firewalls, physical hardware drivers, and forensic municipal audit pipelines.
+## 🚦 System Overview
+
+**EVP Simulator** is a high-performance microscopic simulation platform built in **Go 1.22** with a native desktop interface powered by **Wails v2** and real-time 2D vector rendering in **HTML5 Canvas**. The system is engineered to model, evaluate, and validate **Emergency Vehicle Preemption (EVP)** strategies across complex metropolitan road networks.
+
+Designed in strict compliance with Brazilian safety guidelines (**CONTRAN Resolution nº 960**, **Brazilian Traffic Code CTB - Art. 29, VII**) and international ITS specifications (**FHWA MUTCD Section 4D.26**), the simulator reproduces realistic vehicle kinematics, calculates prioritized green corridors, and integrates seamlessly with the **CARINA CORE** adaptive traffic network intelligence ecosystem.
 
 ---
 
-## 🗺️ Master Navigation & Modules
+## 🗺️ Master Navigation & Subsystems
 
-| Subsystem / Dimension | Focus Area | Direct Link |
+| Subsystem / Dimension | Technical Focus | Document Link |
 | :--- | :--- | :---: |
-| 📚 **Master Map of Content** | Primary Obsidian Hub & Codebase Directory Map | [Explore Hub](CARINA_MOC.md) |
-| 🏛️ **System Architecture** | 8 Concurrent OS Processes, ST-GATv2 Lite, Universal PAE, Intra-Phase PBT & Reward Balancing | [View Blueprint](ARCHITECTURE.md) |
-| ⚡ **Synapse HFT API** | Sub-millisecond gRPC Telemetry & Protobuf IPC Specifications | [View API Reference](API_REFERENCE.md) |
-| 🧠 **Neural Formulations** | PPO-TCN, Dilated Convolutions, ST-GATv2 Lite & DA SILVA | [View Research](RESEARCH_NOTES.md) |
-| 🚦 **Hardware Drivers** | Physical Intersection Control (NTCIP 1202, UTMC2, SNMP) | [View Drivers](HARDWARE_DRIVERS.md) |
-| 🛡️ **Safety Firewall & Watchdog** | Symbolic Veto Rules, D3QN Risk Overrides & Heartbeat Fail-Safe | [View Safety Guide](SAFETY_AND_WATCHDOG.md) |
-| 🚑 **Emergency Preemption (EVP)** | Autonomous Green Corridors, Kinematics Gates & Web Gateway | [View EVP Guide](EVP_AND_PREEMPTION.md) |
-| 📊 **Engineering Warrants** | MUTCD / FHWA Signal Justification Warrants 1, 2, 3, 7, 8 | [View Warrants](TRAFFIC_ENGINEERING_WARRANTS.md) |
-| 📈 **MFD & Traffic Analytics** | Flow-Density Curves, Capacity Drop & Perimeter Gating | [View MFD Guide](MFD_AND_ANALYTICS.md) |
-| 🗄️ **Database & Schemas** | PostgreSQL Delta Storage, Smallint Enums & 12-Factor Setup | [View DB Specs](DATABASE_AND_SCHEMAS.md) |
-| 🔍 **Explainable AI (XAI)** | Captum Integrated Gradients, 5 Formal Equations & Audits | [View XAI & SAS](XAI_AND_SAS.md) |
-| 📄 **Report Blocks Engine** | ABNT NBR 14724 Word (.docx) Builder & OMML Math Equations | [View Reports](REPORT_BLOCKS_AND_TEMPLATES.md) |
-| 🤖 **Small Language Models** | Local Qwen3 1.7B / llama.cpp Offline Textual Justification | [View SLM Guide](SLM_AND_LOCAL_LLM.md) |
-| 🖥️ **Desktop UI & Planning** | Native Flet GUI, Planning Canvas, System Tray & SDS | [View UI Guide](UI_AND_DASHBOARD.md) |
-| 🗺️ **Rendering & Heatmaps** | Vector Map Rendering & Asynchronous Real-Time Heatmaps | [View Rendering](RENDERING_AND_HEATMAPS.md) |
-| 🔐 **Security & Authentication** | User Accounts, Salted Bcrypt Hashing & Brute-Force Lockdown | [View Security](SECURITY_AND_AUTH.md) |
-| 🛠️ **Developer Guides** | Agent Development, Settings Configuration & Setup | [View Guides](DEVELOPER_GUIDES.md) |
-| 🧪 **Testing & Validation** | Pytest Suite (647 Tests), Driver Mocks & Coverage Reporting | [View Testing](TESTING.md) |
-| 🚀 **Deployment & Packaging** | Docker Multi-Stage, Systemd Daemons & Debian Packages | [View Deployment](DEPLOYMENT_AND_PACKAGING.md) |
-
----
-
-## ⚡ Quick Architecture Summary
-
-```text
-       ┌────────────────────────────────────────────────────────┐
-       │             CARINA Multiprocessing Engine              │
-       │           (8 Concurrent Operating System Processes)     │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-      ┌───────────────────────────┼───────────────────────────┐
-      ▼                           ▼                           ▼
-┌──────────────┐          ┌──────────────┐          ┌──────────────────┐
-│CentralCtrl   │          │  AI Process  │          │  Hardware Drivers│
-│(gRPC / HFT)  │ ◄──────► │ (PPO + GAT)  │ ◄──────► │ (NTCIP / UTMC)   │
-└──────┬───────┘          └──────┬───────┘          └──────────────────┘
-       │                         │
-       ▼                         ▼
-┌──────────────┐          ┌──────────────┐
-│ Watchdog     │          │  Guardian    │
-│(500ms Fallbk)│          │ (D3QN Veto)  │
-└──────────────┘          └──────────────┘
-```
+| 📚 **Master Map of Content** | Obsidian Knowledge Graph & Go Codebase Package Hierarchy | [Explore MOC](evp_moc.md) |
+| 🏛️ **System Architecture** | Clean Architecture, Hexagonal / Ports & Adapters, and Goroutines | [View Architecture](architecture.md) |
+| 🚨 **Preemption Walkthrough** | Approach Detection ($60\text{--}160\text{ m}$), Checkout ($15\text{ m}$), and Watchdog | [View Walkthrough](evp_walkthrough.md) |
+| 🚗 **Kinematics & A\* Routing** | Euler Kinematic Engine, Vehicle Modes, and Graph A\* Pathfinding | [View Kinematics](kinematics_and_routing.md) |
+| 🗺️ **SUMO Network Parser** | `.net.xml` and `.net.xml.gz` Ingestion, Cartesian/WGS84 Projection | [View SUMO Parser](sumo_network_parser.md) |
+| 🔌 **SNMP / UTMC Emulation** | UDP SNMP Servers in Go, UTMC2, and NTCIP 1202 Protocol Agents | [View SNMP Emulation](utmc_and_snmp_emulation.md) |
+| 📡 **CARINA CORE Integration** | Fire-and-Forget HTTP Telemetry Dispatch `POST /api/v1/evp/telemetry` | [View Integration](carina_integration_and_telemetry.md) |
+| 🚑 **Fleet Management** | Procedural Emergency Fleet Generator (SAMU, Fire, Police) | [View Fleet Spawner](fleet_management_and_spawner.md) |
+| 🛡️ **Safety & Signal Evaluation** | Phase Evaluation, Clearance Intervals (Yellow/All-Red), and Vetoes | [View Safety](signal_evaluation_and_safety.md) |
+| 📊 **CSV Data Exchange** | Physical Controller Inventory and Trajectory Logging | [View CSV Exchanger](csv_data_exchanger.md) |
+| 🖥️ **Desktop UI & 2D Canvas** | Wails v2 Desktop GUI, 60 FPS HTML5 Canvas Engine, Pan & Zoom | [View UI & Rendering](ui_and_canvas_rendering.md) |
+| ⚡ **Wails IPC Bridge (Go ↔ JS)** | RPC Methods, Typed DTOs, and Asynchronous Event Bus | [View Wails IPC](wails_ipc_and_bridges.md) |
+| 🛠️ **Developer Guides** | Environment Setup, Go 1.22+, Wails CLI, and Architecture Rules | [View Developer Guides](developer_guides.md) |
+| 🧪 **Testing & Validation** | Unit Testing, Kinematics Benchmarks, and SNMP Mock Integration | [View Testing](testing_and_validation.md) |
+| 🚀 **Deployment & Packaging** | Native Standalone Build (`wails build`), Linux and Windows Bundles | [View Deployment](deployment_and_packaging.md) |
+| 📖 **API & Protocol Reference** | Wails RPC Signatures, Telemetry JSON Schemas, and SNMP OIDs | [View API Reference](api_and_protocols_reference.md) |
 
 ---
 
 <div align="center">
   <img src="assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="45" /><br/>
   <b>Noxfort Systems</b> — <i>A State Of Art Company</i><br/>
-  <i>Controlled Artificial Road-traffic Intelligence Network Architecture • CARINA CORE v1.2.0</i><br/>
-  <small>© 2026 Noxfort Systems. Licenciado sob AGPLv3.</small>
+  <i>Intelligent Mobility Engineering • EVP Simulator v1.0.0</i>
 </div>

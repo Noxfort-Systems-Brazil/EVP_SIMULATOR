@@ -1,57 +1,55 @@
 <div align="center">
+  <img src="../assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="70" /><br/>
+  <h1>EVP Simulator — Центр документации</h1>
+  <h3>Multi-Язык Technical Engineering Suite</h3>
+  <i>Noxfort Systems — A State Of Art Company</i><br/><br/>
 
-<img src="../assets/carina-logo.png" alt="CARINA CORE Logo" width="120" />
-
-# CARINA — Комплект технической документации
-### Архитектура системы, аппаратная интеграция и среда безопасности
-*Noxfort Systems — A State Of Art Company*
-
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat&logo=github)](https://github.com/Noxfort-Systems-Brazil/CARINA)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)](https://python.org/)
-[![Go](https://img.shields.io/badge/Go-1.22%2B-00ADD8?style=flat&logo=go)](https://go.dev/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=flat&logo=pytorch&logoColor=white)](https://pytorch.org/)
-
----
-
-🌐 **Языки / Переводы:** **[🇺🇸 English](../en/README.md)** • **[🇧🇷 Português](../pt-br/README.md)** • **[🇪🇸 Español](../es/README.md)** • **[🇫🇷 Français](../fr/README.md)** • **[🇷🇺 Русский](README.md)** • **[🇨🇳 简体中文](../zh/README.md)** • **[📚 Главный Хаб](../index.md)**
-
----
-
+  <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.22%2B-00ADD8?style=flat&logo=go" alt="Go 1.22+" /></a>
+  <a href="https://wails.io/"><img src="https://img.shields.io/badge/Wails-v2-DF0000?style=flat&logo=wails" alt="Wails v2" /></a>
+  <a href="../LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat" alt="License Apache 2.0" /></a>
+  <img src="https://img.shields.io/badge/Статус-Active-brightgreen?style=flat" alt="Статус Active" />
 </div>
 
-## Добро пожаловать в официальную техническую документацию
+---
 
-Данный каталог содержит полный комплект официальной технической документации на русском языке для платформы **CARINA** (Controlled Artificial Road-traffic Intelligence Network Architecture) — промышленной экосистемы глубокого обучения с подкреплением для адаптивного распределенного управления светофорными сетями городов.
+### 🌐 Выбор языка / Языковые хабы
 
-## Каталог технических руководств
+| Язык | Каталог | Статус | Описание |
+| :---: | :---: | :---: | :--- |
+| **🇺🇸 English** | [**`docs/en/`**](README.md) | **Canonical (Source of Truth)** | Full technical documentation suite in English. |
+| **🇧🇷 Português (Brasil)** | [**`docs/pt-br/`**](../pt-br/README.md) | **Completo (Referência Primária)** | Documentação técnica completa em Português do Brasil. |
+| **🇪🇸 Español** | [**`docs/es/`**](../es/README.md) | **Completo (Latinoamérica)** | Documentación técnica completa en Español para operaciones internacionales. |
+| **🇫🇷 Français** | [**`docs/fr/`**](../fr/README.md) | **Complet (Documentation)** | Suite complète de documentation technique en Français. |
+| **🇷🇺 Русский** | [**`docs/ru/`**](../ru/README.md) | **Полный комплект** | Полная техническая документация и руководства на русском языке. |
+| **🇨🇳 简体中文** | [**`docs/zh/`**](../zh/README.md) | **完整技术套件** | 面向智能交通系统 (ITS) 工程师的完整中文技术文档库。 |
 
-| Документ | Тематика | Ключевое содержание |
-|---|---|---|
-| 📚 **[Главная карта знаний (MOC)](carina_moc.md)** | Обзор и граф знаний | Обзор кодовой базы, архитектурная иерархия каталогов и двунаправленный граф Obsidian. |
-| 📖 **[Архитектура системы](architecture.md)** | Базовая архитектура ядра | 8 параллельных микросервисов ОС, графовое внимание ST-GATv2 Lite, универсальный консультант PAE и ускорение Universal AMP. |
-| 🚑 **[Приоритетный пропуск (EVP)](evp_and_preemption.md)** | Приоритет спецтранспорта | Автономные «зелёные коридоры», кинематические шлюзы входа/выхода по формуле гаверсинусов ($60\text{--}160\text{ м}$), веб-шлюз Tailscale (порт 2201) и видеостена CCO на React. |
-| 🔌 **[Драйверы контроллеров и Go Gateway](hardware_drivers.md)** | Полевые контроллеры | Промышленный шлюз на Go (`carina-go`), бессетевой межпроцессный пайплайн NDJSON, протоколы NTCIP 1202, UTMC2, пул SNMP-клиентов и атомарный fail-safe. |
-| 🛡️ **[Архитектура безопасности, Watchdog и FENIX](safety_and_watchdog.md)** | Нейро-символическая безопасность | Символические правила вето (SR-01—SR-05), предотвращение заторов Guardian D3QN, сторожевой таймер Watchdog (< 500 мс) и автовоскрешение F.E.N.I.X. |
-| ⚡ **[API Synapse HFT и очереди IPC](api_reference.md)** | Высокочастотный интерфейс | Субмиллисекундный gRPC-интерфейс Synapse HFT (порт 50051), 10 буферизованных каналов IPC и полиморфный транспорт телеметрии. |
-| 🗄️ **[Архитектура БД и схемы данных](database_and_schemas.md)** | Хранилище и схемы | Асинхронное ядро дельта-хранения в PostgreSQL, обеспечивающее **сокращение объема на 97.9%**, однобайтовые перечисления Smallint и конфигурация 12-Factor `.env`. |
-| 🧠 **[Нейросетевые исследования и формулы](research_notes.md)** | Математическое моделирование | Временные свертки PPO-TCN, латентные проекции PAE, Dueling DQN, ST-GATv2 Lite и учебная программа DA SILVA. |
-| 🚦 **[Светофорные обоснования (MUTCD)](traffic_engineering_warrants.md)** | Организация движения | Алгоритмическая оценка нормативных критериев FHWA/MUTCD для установки светофоров (критерии 1, 2, 3, 7, 8). |
-| 📈 **[MFD и сетевая макроаналитика](mfd_and_analytics.md)** | Макроскопическая физика потоков | Регрессии макроскопической фундаментальной диаграммы (MFD), устранение падения пропускной способности, периметральное дозирование и кэш фильтра инцидентов. |
-| 🔍 **[Объяснимый ИИ (XAI) и SAS](xai_and_sas.md)** | Муниципальный аудит и XAI | Интегрированные градиенты Google Captum, 5 формальных математических уравнений и аналитический модуль криминалистического аудита вето Guardian. |
-| 📄 **[Генератор аналитических отчетов](report_blocks_and_templates.md)** | Автоматизированная отчетность | Генерация документов Word (.docx) по стандарту ABNT NBR 14724 с нативными формулами Office Math Markup Language (OMML). |
-| 🤖 **[Компактные языковые модели (SLM)](slm_and_local_llm.md)** | Автономный приватный ИИ | Локальный 100% офлайн-инференс LLM (Qwen3 1.7B / llama.cpp), генерирующий экспертные текстовые заключения без риска утечки в облако. |
-| 🖥️ **[Графический интерфейс и планировщик](ui_and_dashboard.md)** | Фронтенд-архитектура | Нативный десктопный GUI на Flet, интерактивный векторный планировщик, интеграция с системным треем и мьютекс единственного экземпляра (порт 42123). |
-| 🗺️ **[Векторный рендеринг карт и теплокарты](rendering_and_heatmaps.md)** | Геопространственная визуализация | Офлайн-парсер векторных сетей SUMO `.net.xml` и асинхронные теплокарты ядерной оценки плотности (KDE) в реальном времени. |
-| 🔐 **[Безопасность и аутентификация](security_and_auth.md)** | Контроль доступа | Ролевое управление доступом (RBAC), хеширование bcrypt с солью, блокировка атак перебором и изоляция по стандартам 12-Factor. |
-| 🛠️ **[Руководства разработчика](developer_guides.md)** | Разработка и расширение | Настройка окружения, реализация пользовательских нейросетевых агентов и модульная архитектура параметров SOLID. |
-| 🧪 **[Тестирование и контроль качества](testing.md)** | Обеспечение качества | Набор тестов Pytest из 647 автоматизированных тестов, нативные юнит-тесты Go (`go test`), моки безопасности Guardian и валидация покрытия. |
-| 🚀 **[Развертывание и пакетирование](deployment_and_packaging.md)** | Эксплуатация и DevOps | Многоэтапная сборка Docker-контейнеров с ускорением CUDA и системные службы Linux Systemd. |
+---
+
+## 📚 Technical Guide Каталог
+
+| Document | Область | Техническое резюме |
+| :--- | :--- | :--- |
+| 🗺️ **[Master MOC](evp_moc.md)** | General Index | Obsidian knowledge graph and Go package taxonomy. |
+| 🏛️ **[System Architecture](architecture.md)** | Core Architecture | Hexagonal architecture, Ports & Adapters, and goroutine concurrency. |
+| 🚨 **[Preemption Walkthrough](evp_walkthrough.md)** | EVP Priority | Traffic signal preemption algorithms, spatial thresholds, and checkout. |
+| 🚗 **[Kinematics & A\* Routing](kinematics_and_routing.md)** | Physics & Graphs | Euler kinematics, acceleration curves, and A\* road graph routing. |
+| 🗺️ **[SUMO Network Parser](sumo_network_parser.md)** | Network Ingestion | Native streaming reader for `.net.xml` and `.net.xml.gz` road topologies. |
+| 🔌 **[SNMP / UTMC Emulation](utmc_and_snmp_emulation.md)** | Virtual Hardware | In-memory UDP SNMP agent servers in Go for NTCIP 1202 controller emulation. |
+| 📡 **[CARINA CORE Integration](carina_integration_and_telemetry.md)** | External Telemetry | Asynchronous fire-and-forget client for `POST /api/v1/evp/telemetry`. |
+| 🚑 **[Fleet Management](fleet_management_and_spawner.md)** | Fleet Modeling | Procedural spawner for SAMU ambulances, fire engines, and police cruisers. |
+| 🛡️ **[Safety & Signal Evaluation](signal_evaluation_and_safety.md)** | Safety Auditing | Signal phase clearance, yellow/all-red intervals, and conflict vetoes. |
+| 📊 **[CSV Data Exchange](csv_data_exchanger.md)** | Relational Data | Schemas for controller inventory CSV and fleet mission logging. |
+| 🖥️ **[Desktop UI & 2D Canvas](ui_and_canvas_rendering.md)** | Frontend Desktop | Wails v2, 60 FPS HTML5 Canvas rendering, and interactive pan/zoom camera. |
+| ⚡ **[Wails IPC Bridge](wails_ipc_and_bridges.md)** | Go/JS Communication | RPC methods, typed DTOs, and asynchronous event streaming. |
+| 🛠️ **[Developer Guides](developer_guides.md)** | Engineering | Build setup, architecture rules, and extending simulation services. |
+| 🧪 **[Testing & Validation](testing_and_validation.md)** | Software QA | Unit test suites, kinematics benchmarks, and network integration tests. |
+| 🚀 **[Deployment & Packaging](deployment_and_packaging.md)** | Operations | Native binary builds for Linux and Windows with bundled assets. |
+| 📖 **[API & Protocol Reference](api_and_protocols_reference.md)** | Specifications | Complete Wails contracts, telemetry JSON schemas, and SNMP OIDs. |
 
 ---
 
 <div align="center">
   <img src="../assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="45" /><br/>
   <b>Noxfort Systems</b> — <i>A State Of Art Company</i><br/>
-  <i>Инженерия Интеллектуальной Мобильности • CARINA CORE v1.2.0</i><br/>
-  <small>© 2026 Noxfort Systems. Лицензия AGPLv3.</small>
+  <i>Инженерия интеллектуальной мобильности • EVP Simulator v1.0.0</i>
 </div>

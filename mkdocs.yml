@@ -17,8 +17,8 @@
 # Author: Gabriel Moraes
 # Date: October 2026
 
-site_name: "CARINA & EVP Simulator — Technical Documentation"
-site_description: "Technical documentation suite for CARINA adaptive traffic network and EVP Simulator platform."
+site_name: "EVP Simulator — Technical Documentation"
+site_description: "Technical documentation suite for the EVP Simulator — Emergency Vehicle Preemption & Fleet Simulation Platform"
 site_author: "Gabriel Moraes — Noxfort Systems"
 copyright: "Copyright &copy; 2026 — Noxfort Systems"
 
@@ -42,8 +42,6 @@ validation:
 theme:
   name: material
   language: en
-  logo: assets/carina-logo.png
-  favicon: assets/carina-logo.png
   palette:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
@@ -105,162 +103,140 @@ plugins:
   - search
 
 # ==============================================================================
-# Navigation (6 Idiomas Simétricos com 20 Páginas Cada + Módulo Walkthrough)
+# Navigation (EVP Simulator Architecture & Multi-Language Hubs)
 # ==============================================================================
 nav:
   - Overview: index.md
-  - Master MOC: CARINA_MOC.md
+  - Master MOC: EVP_MOC.md
   - Preempção EVP: EVP_WALKTHROUGH.md
-  - Architecture & Core:
+  - Core & Domain Engine:
     - System Architecture: ARCHITECTURE.md
-    - Emergency Preemption (EVP): EVP_AND_PREEMPTION.md
-    - Synapse HFT API: API_REFERENCE.md
-    - Database & Schemas: DATABASE_AND_SCHEMAS.md
-    - Security & Auth: SECURITY_AND_AUTH.md
-  - Artificial Intelligence:
-    - Neural Research: RESEARCH_NOTES.md
-    - Safety & Watchdog: SAFETY_AND_WATCHDOG.md
-    - Explainable AI (XAI): XAI_AND_SAS.md
-    - Small Language Models: SLM_AND_LOCAL_LLM.md
-    - Report Blocks Engine: REPORT_BLOCKS_AND_TEMPLATES.md
-  - Hardware & Physical Control:
-    - Hardware Drivers: HARDWARE_DRIVERS.md
-    - Traffic Warrants: TRAFFIC_ENGINEERING_WARRANTS.md
-    - MFD & Analytics: MFD_AND_ANALYTICS.md
-  - Frontend & Graphics:
-    - UI & Dashboard: UI_AND_DASHBOARD.md
-    - Rendering & Heatmaps: RENDERING_AND_HEATMAPS.md
+    - Kinematics & Routing (A*): KINEMATICS_AND_ROUTING.md
+    - Signal Evaluation & Safety: SIGNAL_EVALUATION_AND_SAFETY.md
+    - Fleet Management & Spawner: FLEET_MANAGEMENT_AND_SPAWNER.md
+  - Network & Data Ingestion:
+    - SUMO Network Parser: SUMO_NETWORK_PARSER.md
+    - CSV Data Exchange: CSV_DATA_EXCHANGER.md
+  - Hardware & Telemetry:
+    - SNMP / UTMC Controller Emulation: UTMC_AND_SNMP_EMULATION.md
+    - CARINA CORE Integration: CARINA_INTEGRATION_AND_TELEMETRY.md
+    - APIs & Protocols Reference: API_AND_PROTOCOLS_REFERENCE.md
+  - Desktop Interface & IPC:
+    - UI & Canvas 2D Rendering: UI_AND_CANVAS_RENDERING.md
+    - Wails v2 IPC Bridge: WAILS_IPC_AND_BRIDGES.md
   - Operations & QA:
     - Developer Guides: DEVELOPER_GUIDES.md
-    - Testing & Validation: TESTING.md
+    - Testing & Validation: TESTING_AND_VALIDATION.md
     - Deployment & Packaging: DEPLOYMENT_AND_PACKAGING.md
   - Multi-Language Hubs:
     - 🇺🇸 English:
       - Hub: en/README.md
-      - Master MOC: en/carina_moc.md
+      - Master MOC: en/evp_moc.md
       - System Architecture: en/architecture.md
-      - Emergency Preemption (EVP): en/evp_and_preemption.md
-      - Hardware Drivers: en/hardware_drivers.md
-      - Safety & Watchdog: en/safety_and_watchdog.md
-      - Synapse HFT API: en/api_reference.md
-      - Database & Schemas: en/database_and_schemas.md
-      - Neural Research: en/research_notes.md
-      - Traffic Signal Warrants: en/traffic_engineering_warrants.md
-      - MFD & Analytics: en/mfd_and_analytics.md
-      - Explainable AI (XAI): en/xai_and_sas.md
-      - Report Blocks Engine: en/report_blocks_and_templates.md
-      - Small Language Models: en/slm_and_local_llm.md
-      - Desktop UI & Planning: en/ui_and_dashboard.md
-      - Rendering & Heatmaps: en/rendering_and_heatmaps.md
-      - Security & Auth: en/security_and_auth.md
+      - EVP Preemption Walkthrough: en/evp_walkthrough.md
+      - Kinematics & Routing: en/kinematics_and_routing.md
+      - SUMO Network Parser: en/sumo_network_parser.md
+      - SNMP Controller Emulation: en/utmc_and_snmp_emulation.md
+      - CARINA CORE Telemetry: en/carina_integration_and_telemetry.md
+      - Fleet Management: en/fleet_management_and_spawner.md
+      - Signal Safety Evaluation: en/signal_evaluation_and_safety.md
+      - CSV Data Exchange: en/csv_data_exchanger.md
+      - Desktop UI & Canvas 2D: en/ui_and_canvas_rendering.md
+      - Wails v2 IPC Bridge: en/wails_ipc_and_bridges.md
       - Developer Guides: en/developer_guides.md
-      - Testing & QA: en/testing.md
+      - Testing & Validation: en/testing_and_validation.md
       - Deployment & Packaging: en/deployment_and_packaging.md
+      - API & Protocol Reference: en/api_and_protocols_reference.md
     - 🇧🇷 Português (Brasil):
       - Central: pt-br/README.md
-      - Master MOC: pt-br/carina_moc.md
+      - Master MOC: pt-br/evp_moc.md
       - Arquitetura do Sistema: pt-br/architecture.md
-      - Preempção de Emergência (EVP): pt-br/evp_and_preemption.md
-      - Controladores de Hardware: pt-br/hardware_drivers.md
-      - Segurança & Watchdog: pt-br/safety_and_watchdog.md
-      - API Synapse HFT: pt-br/api_reference.md
-      - Banco de Dados & Schemas: pt-br/database_and_schemas.md
-      - Pesquisa Neural: pt-br/research_notes.md
-      - Critérios Semafóricos MUTCD: pt-br/traffic_engineering_warrants.md
-      - MFD & Análise de Tráfego: pt-br/mfd_and_analytics.md
-      - IA Explicável (XAI): pt-br/xai_and_sas.md
-      - Motor de Laudos ABNT: pt-br/report_blocks_and_templates.md
-      - Modelos Locais (SLM): pt-br/slm_and_local_llm.md
-      - Interface Desktop & UI: pt-br/ui_and_dashboard.md
-      - Renderização & Heatmaps: pt-br/rendering_and_heatmaps.md
-      - Segurança & Autenticação: pt-br/security_and_auth.md
-      - Guias de Desenvolvimento: pt-br/developer_guides.md
-      - Diretrizes de Testes: pt-br/testing.md
-      - Implantação & Docker: pt-br/deployment_and_packaging.md
+      - Walkthrough de Preempção: pt-br/evp_walkthrough.md
+      - Cinemática & Roteamento A*: pt-br/kinematics_and_routing.md
+      - Parser de Redes SUMO: pt-br/sumo_network_parser.md
+      - Emulação SNMP / UTMC: pt-br/utmc_and_snmp_emulation.md
+      - Integração CARINA CORE: pt-br/carina_integration_and_telemetry.md
+      - Gerenciamento de Frotas: pt-br/fleet_management_and_spawner.md
+      - Avaliação Semafórica & Segurança: pt-br/signal_evaluation_and_safety.md
+      - Intercâmbio CSV: pt-br/csv_data_exchanger.md
+      - Interface & Canvas 2D: pt-br/ui_and_canvas_rendering.md
+      - Ponte Wails IPC: pt-br/wails_ipc_and_bridges.md
+      - Guias do Desenvolvedor: pt-br/developer_guides.md
+      - Testes & Validação: pt-br/testing_and_validation.md
+      - Deploy & Empacotamento: pt-br/deployment_and_packaging.md
+      - Referência de APIs: pt-br/api_and_protocols_reference.md
     - 🇪🇸 Español:
       - Central: es/README.md
-      - Master MOC: es/carina_moc.md
+      - Master MOC: es/evp_moc.md
       - Arquitectura del Sistema: es/architecture.md
-      - Preempción de Emergencia (EVP): es/evp_and_preemption.md
-      - Controladores de Hardware: es/hardware_drivers.md
-      - Seguridad & Watchdog: es/safety_and_watchdog.md
-      - API Synapse HFT: es/api_reference.md
-      - Base de Datos & Esquemas: es/database_and_schemas.md
-      - Investigación Neural: es/research_notes.md
-      - Criterios Semafóricos MUTCD: es/traffic_engineering_warrants.md
-      - MFD & Analítica de Tráfico: es/mfd_and_analytics.md
-      - IA Explicable (XAI): es/xai_and_sas.md
-      - Motor de Informes ABNT: es/report_blocks_and_templates.md
-      - Modelos Locales (SLM): es/slm_and_local_llm.md
-      - Interfaz de Escritorio & UI: es/ui_and_dashboard.md
-      - Renderizado & Mapas de Calor: es/rendering_and_heatmaps.md
-      - Seguridad & Autenticación: es/security_and_auth.md
+      - Guía de Preempción EVP: es/evp_walkthrough.md
+      - Cinemática y Ruteo A*: es/kinematics_and_routing.md
+      - Parser de Redes SUMO: es/sumo_network_parser.md
+      - Emulación SNMP / UTMC: es/utmc_and_snmp_emulation.md
+      - Integración CARINA CORE: es/carina_integration_and_telemetry.md
+      - Gestión de Flotas: es/fleet_management_and_spawner.md
+      - Seguridad y Evaluación: es/signal_evaluation_and_safety.md
+      - Intercambio CSV: es/csv_data_exchanger.md
+      - Interfaz y Canvas 2D: es/ui_and_canvas_rendering.md
+      - Puente Wails IPC: es/wails_ipc_and_bridges.md
       - Guías del Desarrollador: es/developer_guides.md
-      - Pruebas y Validación: es/testing.md
-      - Despliegue & Docker: es/deployment_and_packaging.md
+      - Pruebas y Validación: es/testing_and_validation.md
+      - Despliegue y Empaquetado: es/deployment_and_packaging.md
+      - Referencia de APIs: es/api_and_protocols_reference.md
     - 🇫🇷 Français:
       - Hub: fr/README.md
-      - Master MOC: fr/carina_moc.md
+      - Master MOC: fr/evp_moc.md
       - Architecture Système: fr/architecture.md
-      - Préemption d'Urgence (EVP): fr/evp_and_preemption.md
-      - Pilotes Matériels: fr/hardware_drivers.md
-      - Sécurité & Watchdog: fr/safety_and_watchdog.md
-      - API Synapse HFT: fr/api_reference.md
-      - Base de Données & Schémas: fr/database_and_schemas.md
-      - Recherche Neurale: fr/research_notes.md
-      - Normes de Signalisation MUTCD: fr/traffic_engineering_warrants.md
-      - MFD & Analytique de Trafic: fr/mfd_and_analytics.md
-      - IA Explicable (XAI): fr/xai_and_sas.md
-      - Moteur de Rapports ABNT: fr/report_blocks_and_templates.md
-      - Petits Modèles de Langage (SLM): fr/slm_and_local_llm.md
-      - Interface Desktop & UI: fr/ui_and_dashboard.md
-      - Rendu & Cartes Thermiques: fr/rendering_and_heatmaps.md
-      - Sécurité & Authentification: fr/security_and_auth.md
-      - Guides Développeur: fr/developer_guides.md
-      - Tests & Validation: fr/testing.md
-      - Déploiement & Docker: fr/deployment_and_packaging.md
+      - Guide de Préemption EVP: fr/evp_walkthrough.md
+      - Cinématique & Ravitaillement A*: fr/kinematics_and_routing.md
+      - Parser de Réseaux SUMO: fr/sumo_network_parser.md
+      - Émulation SNMP / UTMC: fr/utmc_and_snmp_emulation.md
+      - Intégration CARINA CORE: fr/carina_integration_and_telemetry.md
+      - Gestion des Flottes: fr/fleet_management_and_spawner.md
+      - Sécurité & Évaluation des Feux: fr/signal_evaluation_and_safety.md
+      - Échange de Données CSV: fr/csv_data_exchanger.md
+      - Interface Desktop & Canvas: fr/ui_and_canvas_rendering.md
+      - Pont IPC Wails v2: fr/wails_ipc_and_bridges.md
+      - Guides du Développeur: fr/developer_guides.md
+      - Tests & Validation: fr/testing_and_validation.md
+      - Déploiement & Empaquetage: fr/deployment_and_packaging.md
+      - Référence d'APIs: fr/api_and_protocols_reference.md
     - 🇷🇺 Русский:
       - Главная: ru/README.md
-      - Главный MOC: ru/carina_moc.md
+      - Главный MOC: ru/evp_moc.md
       - Архитектура системы: ru/architecture.md
-      - Приоритет спецтранспорта (EVP): ru/evp_and_preemption.md
-      - Драйверы оборудования: ru/hardware_drivers.md
-      - Безопасность и Watchdog: ru/safety_and_watchdog.md
-      - API Synapse HFT: ru/api_reference.md
-      - Базы данных и схемы: ru/database_and_schemas.md
-      - Нейронные исследования: ru/research_notes.md
-      - Светофорные критерии MUTCD: ru/traffic_engineering_warrants.md
-      - MFD и сетевая аналитика: ru/mfd_and_analytics.md
-      - Объяснимый ИИ (XAI): ru/xai_and_sas.md
-      - Генератор отчетов ABNT: ru/report_blocks_and_templates.md
-      - Локальные языковые модели (SLM): ru/slm_and_local_llm.md
-      - Десктопный интерфейс и планирование: ru/ui_and_dashboard.md
-      - Рендеринг и тепловые карты: ru/rendering_and_heatmaps.md
-      - Безопасность и аутентификация: ru/security_and_auth.md
+      - Приоритет спецтранспорта (EVP): ru/evp_walkthrough.md
+      - Кинематика и поиск путей A*: ru/kinematics_and_routing.md
+      - Парсер сетей SUMO: ru/sumo_network_parser.md
+      - Эмуляция контроллеров SNMP: ru/utmc_and_snmp_emulation.md
+      - Интеграция CARINA CORE: ru/carina_integration_and_telemetry.md
+      - Управление спецпарком: ru/fleet_management_and_spawner.md
+      - Оценка безопасности фаз: ru/signal_evaluation_and_safety.md
+      - Обмен данными CSV: ru/csv_data_exchanger.md
+      - Графический интерфейс Canvas: ru/ui_and_canvas_rendering.md
+      - Межпроцессный мост Wails: ru/wails_ipc_and_bridges.md
       - Руководство разработчика: ru/developer_guides.md
-      - Тестирование и валидация: ru/testing.md
-      - Развертывание и Docker: ru/deployment_and_packaging.md
+      - Тестирование и валидация: ru/testing_and_validation.md
+      - Развертывание и сборка: ru/deployment_and_packaging.md
+      - Справочник API: ru/api_and_protocols_reference.md
     - 🇨🇳 简体中文:
       - 导航中心: zh/README.md
-      - 知识库核心 (MOC): zh/carina_moc.md
-      - 系统多进程架构: zh/architecture.md
-      - 紧急车辆优先通行 (EVP): zh/evp_and_preemption.md
-      - 硬件驱动与网关: zh/hardware_drivers.md
-      - 安全防火墙与看门狗: zh/safety_and_watchdog.md
-      - Synapse HFT 接口规范: zh/api_reference.md
-      - 数据库与增量存储: zh/database_and_schemas.md
-      - 神经网络理论与公式: zh/research_notes.md
-      - 交通工程信号设置依据 (MUTCD): zh/traffic_engineering_warrants.md
-      - 宏观基本图与网络分析 (MFD): zh/mfd_and_analytics.md
-      - 可解释性人工智能 (XAI): zh/xai_and_sas.md
-      - 司法鉴定报告引擎 (Word/OMML): zh/report_blocks_and_templates.md
-      - 本地端侧小语言模型 (SLM): zh/slm_and_local_llm.md
-      - 桌面交互界面与路网规划: zh/ui_and_dashboard.md
-      - 矢量路网渲染与热力图: zh/rendering_and_heatmaps.md
-      - 安全体系与身份鉴权: zh/security_and_auth.md
-      - 开发者集成指南: zh/developer_guides.md
-      - 自动化测试与质量保障: zh/testing.md
-      - 容器化部署与运维: zh/deployment_and_packaging.md
+      - 知识库核心 (MOC): zh/evp_moc.md
+      - Go 系统核心架构: zh/architecture.md
+      - 优先通行 (EVP) 技术指南: zh/evp_walkthrough.md
+      - 运动学与 A* 路径规划: zh/kinematics_and_routing.md
+      - SUMO 路网解析器: zh/sumo_network_parser.md
+      - 信号机 SNMP 仿真网关: zh/utmc_and_snmp_emulation.md
+      - CARINA CORE 遥测对接: zh/carina_integration_and_telemetry.md
+      - 应急特种车队调度: zh/fleet_management_and_spawner.md
+      - 信号安全评估与防冲突: zh/signal_evaluation_and_safety.md
+      - CSV 资产与数据交换: zh/csv_data_exchanger.md
+      - 桌面 Canvas 矢量渲染: zh/ui_and_canvas_rendering.md
+      - Wails v2 跨语言桥梁: zh/wails_ipc_and_bridges.md
+      - 开发者集成扩展指南: zh/developer_guides.md
+      - 自动化测试与质量保障: zh/testing_and_validation.md
+      - 原生打包与部署运维: zh/deployment_and_packaging.md
+      - API 协议参考手册: zh/api_and_protocols_reference.md
 
 # ==============================================================================
 # Extra CSS
