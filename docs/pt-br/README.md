@@ -6,7 +6,7 @@
 
   <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.22%2B-00ADD8?style=flat&logo=go" alt="Go 1.22+" /></a>
   <a href="https://wails.io/"><img src="https://img.shields.io/badge/Wails-v2-DF0000?style=flat&logo=wails" alt="Wails v2" /></a>
-  <a href="../LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat" alt="License Apache 2.0" /></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/badge/SPDX--License--Identifier-Apache--2.0-blue.svg?style=flat" alt="SPDX-License-Identifier: Apache-2.0" /></a>
   <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat" alt="Status Active" />
 </div>
 
@@ -52,4 +52,5 @@
   <img src="../assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="45" /><br/>
   <b>Noxfort Systems</b> — <i>A State Of Art Company</i><br/>
   <i>Engenharia de Mobilidade Inteligente • EVP Simulator v1.0.0</i>
+  <small>SPDX-License-Identifier: <a href="../../LICENSE">Apache-2.0</a> • &copy; 2026 Noxfort Systems</small>
 </div>

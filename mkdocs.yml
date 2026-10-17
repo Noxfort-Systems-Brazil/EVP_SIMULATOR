@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Noxfort Systems
+# SPDX-License-Identifier: Apache-2.0
+#
 # EVP Simulator is an open-source emergency vehicle preemption and fleet simulation platform for urban traffic networks.
 # Copyright (C) 2026 Noxfort Systems
 #
@@ -20,7 +23,7 @@
 site_name: "EVP Simulator — Technical Documentation"
 site_description: "Technical documentation suite for the EVP Simulator — Emergency Vehicle Preemption & Fleet Simulation Platform"
 site_author: "Gabriel Moraes — Noxfort Systems"
-copyright: "Copyright &copy; 2026 — Noxfort Systems"
+copyright: "Copyright &copy; 2026 — Noxfort Systems | SPDX-License-Identifier: Apache-2.0"
 
 # Exclude conflicting GitHub folder readme from MkDocs build
 exclude_docs: |

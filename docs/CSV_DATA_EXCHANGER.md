@@ -37,4 +37,5 @@ timestamp_ms,vehicle_id,corporation,lat,lon,speed_kmh,siren,preemption_engaged,t
   <img src="assets/noxfort-logo.png" alt="Noxfort Systems Logo" width="45" /><br/>
   <b>Noxfort Systems</b> — <i>A State Of Art Company</i><br/>
   <i>Intelligent Mobility Engineering • EVP Simulator v1.0.0</i>
+  <small>SPDX-License-Identifier: <a href="../LICENSE">Apache-2.0</a> • &copy; 2026 Noxfort Systems</small>
 </div>

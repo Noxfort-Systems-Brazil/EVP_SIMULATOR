@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evp-simulator"
+version = "1.0.0"
+description = "Emergency Vehicle Preemption (EVP) and Fleet Simulation Platform for Urban Traffic Networks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [
+    {name = "Gabriel Moraes", email = "gmateusmoraes@gmail.com"}
+]
+keywords = ["traffic", "preemption", "evp", "sumo", "simulation", "wails", "go", "spdx"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.5.0",
+    "pymdown-extensions>=10.7"
+]
+
+[project.urls]
+Homepage = "https://github.com/Noxfort-Systems-Brazil/EVP_SIMULATOR"
+Documentation = "https://noxfort.com/docs/evp-simulator"
+Repository = "https://github.com/Noxfort-Systems-Brazil/EVP_SIMULATOR"
