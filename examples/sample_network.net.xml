@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,1000.00,1000.00" origBoundary="-46.633308,-23.550520,-46.620000,-23.540000" />
+
+    <!-- Junctions -->
+    <junction id="J0" type="dead_end" x="0.00" y="200.00" incLanes="edge_return_0" />
+    <junction id="J1" type="traffic_light" x="300.00" y="200.00" incLanes="edge_0_0 edge_cross1_in_0" />
+    <junction id="J2" type="traffic_light" x="700.00" y="200.00" incLanes="edge_1_0 edge_cross2_in_0" />
+    <junction id="J3" type="dead_end" x="1000.00" y="200.00" incLanes="edge_2_0" />
+    
+    <junction id="J_CROSS1_N" type="dead_end" x="300.00" y="400.00" incLanes="" />
+    <junction id="J_CROSS1_S" type="dead_end" x="300.00" y="0.00" incLanes="" />
+
+    <!-- Main Arterial Edges -->
+    <edge id="edge_0" from="J0" to="J1" priority="9" numLanes="2">
+        <lane id="edge_0_0" index="0" speed="20.00" length="300.00" shape="0.00,200.00 300.00,200.00" />
+        <lane id="edge_0_1" index="1" speed="20.00" length="300.00" shape="0.00,203.20 300.00,203.20" />
+    </edge>
+
+    <edge id="edge_1" from="J1" to="J2" priority="9" numLanes="2">
+        <lane id="edge_1_0" index="0" speed="22.22" length="400.00" shape="300.00,200.00 700.00,200.00" />
+        <lane id="edge_1_1" index="1" speed="22.22" length="400.00" shape="300.00,203.20 700.00,203.20" />
+    </edge>
+
+    <edge id="edge_2" from="J2" to="J3" priority="9" numLanes="2">
+        <lane id="edge_2_0" index="0" speed="20.00" length="300.00" shape="700.00,200.00 1000.00,200.00" />
+        <lane id="edge_2_1" index="1" speed="20.00" length="300.00" shape="700.00,203.20 1000.00,203.20" />
+    </edge>
+
+    <!-- Transverse Edges for J1 -->
+    <edge id="edge_cross1_in" from="J_CROSS1_N" to="J1" priority="5" numLanes="1">
+        <lane id="edge_cross1_in_0" index="0" speed="13.89" length="200.00" shape="300.00,400.00 300.00,200.00" />
+    </edge>
+
+    <edge id="edge_cross1_out" from="J1" to="J_CROSS1_S" priority="5" numLanes="1">
+        <lane id="edge_cross1_out_0" index="0" speed="13.89" length="200.00" shape="300.00,200.00 300.00,0.00" />
+    </edge>
+
+    <!-- Return loop to allow infinite movement -->
+    <edge id="edge_return" from="J3" to="J0" priority="7" numLanes="1">
+        <lane id="edge_return_0" index="0" speed="18.00" length="1000.00" shape="1000.00,200.00 1000.00,600.00 0.00,600.00 0.00,200.00" />
+    </edge>
+
+    <!-- Connections with linkIndex matching tlLogics -->
+    <connection from="edge_0" to="edge_1" fromLane="0" toLane="0" tl="J1" linkIndex="0" dir="s" />
+    <connection from="edge_0" to="edge_1" fromLane="1" toLane="1" tl="J1" linkIndex="1" dir="s" />
+    <connection from="edge_cross1_in" to="edge_cross1_out" fromLane="0" toLane="0" tl="J1" linkIndex="2" dir="s" />
+
+    <connection from="edge_1" to="edge_2" fromLane="0" toLane="0" tl="J2" linkIndex="0" dir="s" />
+    <connection from="edge_1" to="edge_2" fromLane="1" toLane="1" tl="J2" linkIndex="1" dir="s" />
+
+    <connection from="edge_2" to="edge_return" fromLane="0" toLane="0" dir="r" />
+    <connection from="edge_return" to="edge_0" fromLane="0" toLane="0" dir="s" />
+
+    <!-- Traffic Light Logic for J1 (links 0,1: Main; link 2: Cross) -->
+    <tlLogic id="J1" type="static" programID="0" offset="0">
+        <phase duration="35" state="GGr" />
+        <phase duration="4"  state="yyr" />
+        <phase duration="2"  state="rrr" />
+        <phase duration="20" state="rrG" />
+        <phase duration="4"  state="rry" />
+        <phase duration="2"  state="rrr" />
+    </tlLogic>
+
+    <!-- Traffic Light Logic for J2 (links 0,1: Main) -->
+    <tlLogic id="J2" type="static" programID="0" offset="0">
+        <phase duration="40" state="GG" />
+        <phase duration="4"  state="yy" />
+        <phase duration="2"  state="rr" />
+    </tlLogic>
+</net>

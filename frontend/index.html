@@ -1,0 +1,184 @@
+<!--
+  EVP Simulator is an open-source emergency vehicle preemption and fleet simulation platform for urban traffic networks.
+  Copyright (C) 2026 Noxfort Systems
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  File: index.html
+  Author: Gabriel Moraes
+  Date: October 2026
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVP Simulator - CARINA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Minimalist Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="brand-group">
+                <span class="app-icon">🚦</span>
+                <span class="app-title">EVP Simulator</span>
+                <span class="app-tag">CARINA</span>
+                <div id="sim-status-pill" class="status-pill paused">
+                    <span class="status-dot"></span>
+                    <span id="sim-status-text">Aguardando Mapa</span>
+                </div>
+
+                <!-- Highlight Vehicle Count Indicator -->
+                <div id="vehicle-stat-badge" class="vehicle-stat-pill" title="Total de viaturas na simulação">
+                    <span class="v-icon">🚑</span>
+                    <span class="v-text">Viaturas: <strong id="vehicle-total-num">0</strong></span>
+                    <span id="vehicle-corp-breakdown" class="v-breakdown"></span>
+                </div>
+
+                <!-- Interactive Fleet Mode Chips -->
+                <div id="fleet-chips-container" class="fleet-chips-group"></div>
+
+                <!-- Quick Global Fleet Alert Toggle -->
+                <button id="btn-toggle-fleet-alert" class="btn btn-ghost" style="display:none;" title="Alternar Modo Alerta de toda a frota simultaneamente (Alerta / Normal)">
+                    <span id="btn-fleet-alert-icon">🚨</span> <span id="btn-fleet-alert-label">Frota em Alerta</span>
+                </button>
+            </div>
+
+            <div class="controls-group">
+                <!-- Primary Action: Import Map (Auto-starts simulation and traffic lights) -->
+                <button id="btn-load-map" class="btn btn-primary-action" title="Carregar malha viária SUMO (.net.xml.gz ou .net.xml) para iniciar a simulação automaticamente">
+                    <span class="btn-icon">🗺️</span> <span>Importar Mapa</span>
+                </button>
+
+                <!-- Connect CARINA Target URL Action -->
+                <button id="btn-config-target" class="btn btn-secondary-action" title="Inserir ou alterar a URL de conexão com o CARINA_CORE (Tailscale ou Localhost)">
+                    <span class="btn-icon">🔗</span> <span>Conectar CARINA</span>
+                </button>
+
+                <!-- Telemetry Streaming (Mandatory & Fixed) -->
+                <div class="telemetry-badge-fixed" title="Transmissão contínua obrigatória a 1 Hz para CARINA_CORE (não pode ser desativada)">
+                    <span class="t-icon">📡</span> Telemetria: <strong>ATIVA (1 Hz)</strong>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Secondary Actions -->
+                <div class="secondary-actions">
+                    <button id="btn-export-vehicles" class="btn btn-ghost" title="Exportar inventário de viaturas em CSV para o CARINA_CORE">
+                        <span class="btn-icon">🚑</span> Exp. Viaturas
+                    </button>
+                    <button id="btn-export-controllers" class="btn btn-ghost" title="Exportar inventário de semáforos com IPs em CSV para o CARINA_CORE">
+                        <span class="btn-icon">🚦</span> Exp. Semáforos
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Area: Dedicated Event Log -->
+        <main class="console-wrapper">
+            <div class="console-header">
+                <div class="console-title-area">
+                    <h2>Registro de Eventos</h2>
+                    <span id="log-counter" class="log-count-badge">0 eventos</span>
+                    <span id="console-vehicle-badge" class="console-vehicle-chip">🚑 0 viaturas ativas</span>
+                </div>
+
+                <div class="console-actions">
+                    <!-- Quick Filters -->
+                    <div class="filter-tabs">
+                        <button class="filter-btn active" data-filter="all">Todos</button>
+                        <button class="filter-btn" data-filter="alert">Alertas</button>
+                        <button class="filter-btn" data-filter="telemetry">Telemetria</button>
+                        <button class="filter-btn" data-filter="system">Sistema</button>
+                    </div>
+
+                    <div class="divider-small"></div>
+
+                    <label class="autoscroll-toggle">
+                        <input type="checkbox" id="check-autoscroll" checked>
+                        <span>Auto-scroll</span>
+                    </label>
+
+                    <button id="btn-clear-logs" class="btn-icon-only" title="Limpar visualização de logs">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Event Terminal -->
+            <div id="log-terminal" class="terminal-body">
+                <div class="log-entry log-system">
+                    <span class="log-time">[Inicializando]</span>
+                    <span class="log-tag tag-system">SISTEMA</span>
+                    <span class="log-msg">EVP Fleet Simulator iniciado. Aguardando importação da malha viária...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Discrete Footer with Simulation Metrics -->
+        <footer class="bottom-bar">
+            <div class="footer-stats">
+                <span id="stat-network">Malha: aguardando importação...</span>
+
+                <span class="bullet">•</span>
+                <span id="stat-lights">Semáforos: 0</span>
+                <span class="bullet">•</span>
+                <span id="stat-vehicles">Viaturas: 0</span>
+            </div>
+            <div class="footer-telemetry">
+                <span>Destino: <code id="footer-target-url">http://localhost:2201/amb/v1</code></span>
+                <button id="btn-edit-dest" class="btn-dest-toggle" title="Alterar URL de destino da telemetria">
+                    ✏️ Alterar
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal: Configuração de Endpoint CARINA -->
+    <div id="modal-endpoint" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">🔗</span>
+                    <h3>Conectar ao CARINA_CORE</h3>
+                </div>
+                <button id="btn-modal-close" class="btn-modal-close" title="Fechar">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">
+                    Cole o link do CARINA (Tailscale Funnel ou Gateway Local da porta 2201).
+                </p>
+                <div class="input-group">
+                    <label for="input-target-url">URL de Ingestão do CARINA:</label>
+                    <div class="input-with-action">
+                        <input type="text" id="input-target-url" placeholder="https://<tailnet>.ts.net/amb/v1 ou http://localhost:2201/amb/v1" autocomplete="off" spellcheck="false" />
+                        <button id="btn-paste-clipboard" class="btn btn-ghost" type="button" title="Colar da área de transferência">📋 Colar</button>
+                    </div>
+                </div>
+                <div class="modal-presets">
+                    <span class="presets-label">Atalho rápido:</span>
+                    <button id="btn-preset-local" class="btn-preset-chip" type="button">🏠 Localhost (2201)</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-modal-cancel" class="btn btn-ghost" type="button">Cancelar</button>
+                <button id="btn-modal-save" class="btn btn-primary-action" type="button">Salvar e Conectar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

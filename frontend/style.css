@@ -1,0 +1,779 @@
+/*
+ * EVP Simulator is an open-source emergency vehicle preemption and fleet simulation platform for urban traffic networks.
+ * Copyright (C) 2026 Noxfort Systems
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * File: style.css
+ * Author: Gabriel Moraes
+ * Date: October 2026
+ */
+
+:root {
+    --bg-dark: #0a0f1d;
+    --bg-surface: #111827;
+    --bg-card: #1f2937;
+    --border: #374151;
+    --border-light: #4b5563;
+    --text-primary: #f9fafb;
+    --text-muted: #9ca3af;
+    --text-faint: #6b7280;
+
+    --green: #10b981;
+    --green-bg: rgba(16, 185, 129, 0.15);
+    --red: #ef4444;
+    --red-bg: rgba(239, 68, 68, 0.15);
+    --blue: #3b82f6;
+    --blue-bg: rgba(59, 130, 246, 0.15);
+    --cyan: #06b6d4;
+    --cyan-bg: rgba(6, 182, 212, 0.15);
+    --amber: #f59e0b;
+    --amber-bg: rgba(245, 158, 11, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* --- Top Navigation Bar --- */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    height: 58px;
+    flex-shrink: 0;
+}
+
+.brand-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.app-icon {
+    font-size: 1.3rem;
+}
+
+.app-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
+}
+
+.app-tag {
+    background: #2563eb;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    margin-left: 8px;
+    transition: all 0.2s ease;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--text-faint);
+}
+
+.status-pill.paused .status-dot {
+    background-color: var(--amber);
+}
+
+.status-pill.running {
+    border-color: var(--green);
+    background: var(--green-bg);
+}
+
+.status-pill.running .status-dot {
+    background-color: var(--green);
+    box-shadow: 0 0 6px var(--green);
+}
+
+/* Vehicle Stat Pill */
+.vehicle-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid #3b82f6;
+    color: #e2e8f0;
+    margin-left: 8px;
+    transition: all 0.2s ease;
+}
+
+.vehicle-stat-pill .v-icon {
+    font-size: 0.9rem;
+}
+
+.vehicle-stat-pill strong {
+    color: #38bdf8;
+    font-weight: 700;
+}
+
+.v-breakdown {
+    color: #94a3b8;
+    font-size: 0.72rem;
+    margin-left: 2px;
+}
+
+.console-vehicle-chip {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background-color: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* Fleet Interactive Mode Chips */
+.fleet-chips-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+}
+
+.fleet-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    background: rgba(15, 23, 42, 0.7);
+    color: #e2e8f0;
+}
+
+.fleet-chip:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.fleet-chip.chip-alert {
+    background: rgba(220, 38, 38, 0.2);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #fca5a5;
+}
+
+.fleet-chip.chip-alert .chip-mode {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.fleet-chip.chip-normal {
+    background: rgba(71, 85, 105, 0.25);
+    border-color: rgba(100, 116, 139, 0.4);
+    color: #94a3b8;
+}
+
+.fleet-chip.chip-normal .chip-mode {
+    color: #cbd5e1;
+    font-weight: 500;
+}
+
+.fleet-chip .chip-speed {
+    font-size: 0.68rem;
+    opacity: 0.85;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    border-radius: 6px;
+}
+
+/* --- Controls Group --- */
+.controls-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.divider {
+    width: 1px;
+    height: 22px;
+    background-color: var(--border);
+    margin: 0 4px;
+}
+
+.divider-small {
+    width: 1px;
+    height: 16px;
+    background-color: var(--border);
+    margin: 0 2px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    user-select: none;
+    outline: none;
+}
+
+/* Primary Action Button (Import Map) */
+.btn-primary-action {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-action:hover {
+    background-color: #1d4ed8;
+    border-color: #60a5fa;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+/* Mandatory Telemetry Badge (Fixed) */
+.telemetry-badge-fixed {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 13px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: rgba(16, 185, 129, 0.14);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    user-select: none;
+    cursor: default;
+}
+
+.telemetry-badge-fixed .t-icon {
+    font-size: 0.85rem;
+}
+
+.telemetry-badge-fixed strong {
+    color: #34d399;
+    font-weight: 700;
+}
+
+/* Secondary Actions (Ghost buttons) */
+.secondary-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-ghost {
+    background-color: transparent;
+    color: var(--text-muted);
+    border-color: transparent;
+    padding: 6px 10px;
+}
+
+.btn-ghost:hover {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+/* --- Console / Event Log Wrapper --- */
+.console-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-dark);
+    overflow: hidden;
+    padding: 16px 20px;
+    gap: 12px;
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-surface);
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.console-title-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.console-title-area h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.2px;
+}
+
+.log-count-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background-color: var(--bg-card);
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.console-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    background-color: var(--bg-card);
+    padding: 2px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.autoscroll-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.autoscroll-toggle input {
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.btn-icon-only {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-icon-only:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-light);
+}
+
+/* Terminal Body */
+.terminal-body {
+    flex: 1;
+    background-color: #050811;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    overflow-y: auto;
+    font-family: ui-monospace, "JetBrains Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace;
+    font-size: 0.82rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+    background: #050811;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+
+/* Individual Log Entries */
+.log-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    line-height: 1.45;
+    transition: background-color 0.1s ease;
+    word-break: break-word;
+}
+
+.log-entry:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.log-time {
+    color: #64748b;
+    font-size: 0.76rem;
+    flex-shrink: 0;
+    letter-spacing: -0.2px;
+}
+
+.log-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    letter-spacing: 0.4px;
+}
+
+.log-msg {
+    color: #e2e8f0;
+    flex: 1;
+}
+
+/* Category Variations */
+.tag-system {
+    background: var(--blue-bg);
+    color: var(--blue);
+}
+
+.tag-alert {
+    background: var(--red-bg);
+    color: var(--red);
+}
+
+.tag-telemetry {
+    background: var(--cyan-bg);
+    color: var(--cyan);
+}
+
+.tag-traffic {
+    background: var(--amber-bg);
+    color: var(--amber);
+}
+
+.tag-normal {
+    background: rgba(148, 163, 184, 0.15);
+    color: #94a3b8;
+}
+
+/* Specific Highlight Entries */
+.log-entry.log-alert {
+    background-color: rgba(239, 68, 68, 0.06);
+    border-left: 2px solid var(--red);
+}
+
+.log-entry.log-alert .log-msg {
+    color: #fca5a5;
+    font-weight: 600;
+}
+
+.log-entry.log-telemetry {
+    border-left: 2px solid var(--cyan);
+}
+
+.log-entry.log-telemetry .log-msg {
+    color: #bae6fd;
+}
+
+.log-empty {
+    color: var(--text-faint);
+    text-align: center;
+    padding: 30px;
+    font-style: italic;
+}
+
+/* --- Bottom Bar --- */
+.bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 20px;
+    background-color: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.footer-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bullet {
+    color: var(--border-light);
+}
+
+.footer-telemetry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-telemetry code {
+    background-color: var(--bg-card);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #38bdf8;
+    font-size: 0.72rem;
+}
+
+.btn-dest-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 0.70rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-dest-toggle:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: #38bdf8;
+}
+
+/* Secondary Action Button (Connect CARINA) */
+.btn-secondary-action {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary-action:hover {
+    background-color: rgba(59, 130, 246, 0.28);
+    border-color: #3b82f6;
+    color: #93c5fd;
+}
+
+/* --- Endpoint Modal Dialog --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    width: 520px;
+    max-width: 90vw;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-title-group h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.btn-modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.btn-modal-close:hover {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.input-with-action {
+    display: flex;
+    gap: 6px;
+}
+
+.input-with-action input {
+    flex: 1;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    outline: none;
+    font-family: monospace;
+    transition: border-color 0.15s ease;
+}
+
+.input-with-action input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.modal-presets {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.btn-preset-chip {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    color: #38bdf8;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s ease;
+}
+
+.btn-preset-chip:hover {
+    border-color: #38bdf8;
+    background-color: rgba(56, 189, 248, 0.1);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+    background-color: var(--bg-dark);
+}
+

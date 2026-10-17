@@ -1,0 +1,269 @@
+# EVP Simulator is an open-source emergency vehicle preemption and fleet simulation platform for urban traffic networks.
+# Copyright (C) 2026 Noxfort Systems
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# File: mkdocs.yml
+# Author: Gabriel Moraes
+# Date: October 2026
+
+site_name: "CARINA & EVP Simulator — Technical Documentation"
+site_description: "Technical documentation suite for CARINA adaptive traffic network and EVP Simulator platform."
+site_author: "Gabriel Moraes — Noxfort Systems"
+copyright: "Copyright &copy; 2026 — Noxfort Systems"
+
+# Exclude conflicting GitHub folder readme from MkDocs build
+exclude_docs: |
+  /README.md
+
+validation:
+  omitted_files: ignore
+  absolute_links: ignore
+  unrecognized_links: ignore
+  links:
+    not_found: ignore
+    absolute_links: ignore
+    unrecognized_links: ignore
+    anchors: ignore
+
+# ==============================================================================
+# Theme
+# ==============================================================================
+theme:
+  name: material
+  language: en
+  logo: assets/carina-logo.png
+  favicon: assets/carina-logo.png
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Light Mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Dark Mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - navigation.path
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+# ==============================================================================
+# Markdown Extensions
+# ==============================================================================
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+# ==============================================================================
+# Plugins
+# ==============================================================================
+plugins:
+  - search
+
+# ==============================================================================
+# Navigation (6 Idiomas Simétricos com 20 Páginas Cada + Módulo Walkthrough)
+# ==============================================================================
+nav:
+  - Overview: index.md
+  - Master MOC: CARINA_MOC.md
+  - Preempção EVP: EVP_WALKTHROUGH.md
+  - Architecture & Core:
+    - System Architecture: ARCHITECTURE.md
+    - Emergency Preemption (EVP): EVP_AND_PREEMPTION.md
+    - Synapse HFT API: API_REFERENCE.md
+    - Database & Schemas: DATABASE_AND_SCHEMAS.md
+    - Security & Auth: SECURITY_AND_AUTH.md
+  - Artificial Intelligence:
+    - Neural Research: RESEARCH_NOTES.md
+    - Safety & Watchdog: SAFETY_AND_WATCHDOG.md
+    - Explainable AI (XAI): XAI_AND_SAS.md
+    - Small Language Models: SLM_AND_LOCAL_LLM.md
+    - Report Blocks Engine: REPORT_BLOCKS_AND_TEMPLATES.md
+  - Hardware & Physical Control:
+    - Hardware Drivers: HARDWARE_DRIVERS.md
+    - Traffic Warrants: TRAFFIC_ENGINEERING_WARRANTS.md
+    - MFD & Analytics: MFD_AND_ANALYTICS.md
+  - Frontend & Graphics:
+    - UI & Dashboard: UI_AND_DASHBOARD.md
+    - Rendering & Heatmaps: RENDERING_AND_HEATMAPS.md
+  - Operations & QA:
+    - Developer Guides: DEVELOPER_GUIDES.md
+    - Testing & Validation: TESTING.md
+    - Deployment & Packaging: DEPLOYMENT_AND_PACKAGING.md
+  - Multi-Language Hubs:
+    - 🇺🇸 English:
+      - Hub: en/README.md
+      - Master MOC: en/carina_moc.md
+      - System Architecture: en/architecture.md
+      - Emergency Preemption (EVP): en/evp_and_preemption.md
+      - Hardware Drivers: en/hardware_drivers.md
+      - Safety & Watchdog: en/safety_and_watchdog.md
+      - Synapse HFT API: en/api_reference.md
+      - Database & Schemas: en/database_and_schemas.md
+      - Neural Research: en/research_notes.md
+      - Traffic Signal Warrants: en/traffic_engineering_warrants.md
+      - MFD & Analytics: en/mfd_and_analytics.md
+      - Explainable AI (XAI): en/xai_and_sas.md
+      - Report Blocks Engine: en/report_blocks_and_templates.md
+      - Small Language Models: en/slm_and_local_llm.md
+      - Desktop UI & Planning: en/ui_and_dashboard.md
+      - Rendering & Heatmaps: en/rendering_and_heatmaps.md
+      - Security & Auth: en/security_and_auth.md
+      - Developer Guides: en/developer_guides.md
+      - Testing & QA: en/testing.md
+      - Deployment & Packaging: en/deployment_and_packaging.md
+    - 🇧🇷 Português (Brasil):
+      - Central: pt-br/README.md
+      - Master MOC: pt-br/carina_moc.md
+      - Arquitetura do Sistema: pt-br/architecture.md
+      - Preempção de Emergência (EVP): pt-br/evp_and_preemption.md
+      - Controladores de Hardware: pt-br/hardware_drivers.md
+      - Segurança & Watchdog: pt-br/safety_and_watchdog.md
+      - API Synapse HFT: pt-br/api_reference.md
+      - Banco de Dados & Schemas: pt-br/database_and_schemas.md
+      - Pesquisa Neural: pt-br/research_notes.md
+      - Critérios Semafóricos MUTCD: pt-br/traffic_engineering_warrants.md
+      - MFD & Análise de Tráfego: pt-br/mfd_and_analytics.md
+      - IA Explicável (XAI): pt-br/xai_and_sas.md
+      - Motor de Laudos ABNT: pt-br/report_blocks_and_templates.md
+      - Modelos Locais (SLM): pt-br/slm_and_local_llm.md
+      - Interface Desktop & UI: pt-br/ui_and_dashboard.md
+      - Renderização & Heatmaps: pt-br/rendering_and_heatmaps.md
+      - Segurança & Autenticação: pt-br/security_and_auth.md
+      - Guias de Desenvolvimento: pt-br/developer_guides.md
+      - Diretrizes de Testes: pt-br/testing.md
+      - Implantação & Docker: pt-br/deployment_and_packaging.md
+    - 🇪🇸 Español:
+      - Central: es/README.md
+      - Master MOC: es/carina_moc.md
+      - Arquitectura del Sistema: es/architecture.md
+      - Preempción de Emergencia (EVP): es/evp_and_preemption.md
+      - Controladores de Hardware: es/hardware_drivers.md
+      - Seguridad & Watchdog: es/safety_and_watchdog.md
+      - API Synapse HFT: es/api_reference.md
+      - Base de Datos & Esquemas: es/database_and_schemas.md
+      - Investigación Neural: es/research_notes.md
+      - Criterios Semafóricos MUTCD: es/traffic_engineering_warrants.md
+      - MFD & Analítica de Tráfico: es/mfd_and_analytics.md
+      - IA Explicable (XAI): es/xai_and_sas.md
+      - Motor de Informes ABNT: es/report_blocks_and_templates.md
+      - Modelos Locales (SLM): es/slm_and_local_llm.md
+      - Interfaz de Escritorio & UI: es/ui_and_dashboard.md
+      - Renderizado & Mapas de Calor: es/rendering_and_heatmaps.md
+      - Seguridad & Autenticación: es/security_and_auth.md
+      - Guías del Desarrollador: es/developer_guides.md
+      - Pruebas y Validación: es/testing.md
+      - Despliegue & Docker: es/deployment_and_packaging.md
+    - 🇫🇷 Français:
+      - Hub: fr/README.md
+      - Master MOC: fr/carina_moc.md
+      - Architecture Système: fr/architecture.md
+      - Préemption d'Urgence (EVP): fr/evp_and_preemption.md
+      - Pilotes Matériels: fr/hardware_drivers.md
+      - Sécurité & Watchdog: fr/safety_and_watchdog.md
+      - API Synapse HFT: fr/api_reference.md
+      - Base de Données & Schémas: fr/database_and_schemas.md
+      - Recherche Neurale: fr/research_notes.md
+      - Normes de Signalisation MUTCD: fr/traffic_engineering_warrants.md
+      - MFD & Analytique de Trafic: fr/mfd_and_analytics.md
+      - IA Explicable (XAI): fr/xai_and_sas.md
+      - Moteur de Rapports ABNT: fr/report_blocks_and_templates.md
+      - Petits Modèles de Langage (SLM): fr/slm_and_local_llm.md
+      - Interface Desktop & UI: fr/ui_and_dashboard.md
+      - Rendu & Cartes Thermiques: fr/rendering_and_heatmaps.md
+      - Sécurité & Authentification: fr/security_and_auth.md
+      - Guides Développeur: fr/developer_guides.md
+      - Tests & Validation: fr/testing.md
+      - Déploiement & Docker: fr/deployment_and_packaging.md
+    - 🇷🇺 Русский:
+      - Главная: ru/README.md
+      - Главный MOC: ru/carina_moc.md
+      - Архитектура системы: ru/architecture.md
+      - Приоритет спецтранспорта (EVP): ru/evp_and_preemption.md
+      - Драйверы оборудования: ru/hardware_drivers.md
+      - Безопасность и Watchdog: ru/safety_and_watchdog.md
+      - API Synapse HFT: ru/api_reference.md
+      - Базы данных и схемы: ru/database_and_schemas.md
+      - Нейронные исследования: ru/research_notes.md
+      - Светофорные критерии MUTCD: ru/traffic_engineering_warrants.md
+      - MFD и сетевая аналитика: ru/mfd_and_analytics.md
+      - Объяснимый ИИ (XAI): ru/xai_and_sas.md
+      - Генератор отчетов ABNT: ru/report_blocks_and_templates.md
+      - Локальные языковые модели (SLM): ru/slm_and_local_llm.md
+      - Десктопный интерфейс и планирование: ru/ui_and_dashboard.md
+      - Рендеринг и тепловые карты: ru/rendering_and_heatmaps.md
+      - Безопасность и аутентификация: ru/security_and_auth.md
+      - Руководство разработчика: ru/developer_guides.md
+      - Тестирование и валидация: ru/testing.md
+      - Развертывание и Docker: ru/deployment_and_packaging.md
+    - 🇨🇳 简体中文:
+      - 导航中心: zh/README.md
+      - 知识库核心 (MOC): zh/carina_moc.md
+      - 系统多进程架构: zh/architecture.md
+      - 紧急车辆优先通行 (EVP): zh/evp_and_preemption.md
+      - 硬件驱动与网关: zh/hardware_drivers.md
+      - 安全防火墙与看门狗: zh/safety_and_watchdog.md
+      - Synapse HFT 接口规范: zh/api_reference.md
+      - 数据库与增量存储: zh/database_and_schemas.md
+      - 神经网络理论与公式: zh/research_notes.md
+      - 交通工程信号设置依据 (MUTCD): zh/traffic_engineering_warrants.md
+      - 宏观基本图与网络分析 (MFD): zh/mfd_and_analytics.md
+      - 可解释性人工智能 (XAI): zh/xai_and_sas.md
+      - 司法鉴定报告引擎 (Word/OMML): zh/report_blocks_and_templates.md
+      - 本地端侧小语言模型 (SLM): zh/slm_and_local_llm.md
+      - 桌面交互界面与路网规划: zh/ui_and_dashboard.md
+      - 矢量路网渲染与热力图: zh/rendering_and_heatmaps.md
+      - 安全体系与身份鉴权: zh/security_and_auth.md
+      - 开发者集成指南: zh/developer_guides.md
+      - 自动化测试与质量保障: zh/testing.md
+      - 容器化部署与运维: zh/deployment_and_packaging.md
+
+# ==============================================================================
+# Extra CSS
+# ==============================================================================
+extra_css:
+  - stylesheets/extra.css

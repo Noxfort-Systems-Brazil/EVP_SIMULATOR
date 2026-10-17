@@ -1,0 +1,9 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "evp_simulator",
+  "outputfilename": "evp_simulator",
+  "frontend:dir": "frontend",
+  "author": {
+    "name": "CARINA Team"
+  }
+}
